@@ -13,7 +13,8 @@ def generate_launch_description():
         [
             DeclareLaunchArgument(
                 name="model",
-                default_value=[leo_description_share, "/urdf/leo_sim.urdf.xacro"],
+                default_value=[leo_description_share,
+                               "/urdf/leo_sim.urdf.xacro"],
                 description="Absolute path to robot urdf.xacro file",
             ),
             DeclareLaunchArgument(
@@ -55,19 +56,21 @@ def generate_launch_description():
                 arguments=[
                     "-topic", "robot_description",
                     "-entity", LaunchConfiguration("model_name"),
+                    "-timeout", "120",
                 ],
+                parameters=[{"use_sim_time": True}]
                 # fmt: on
             ),
             Node(
                 name="joint_state_broadcaster_spawner",
                 package="controller_manager",
-                executable="spawner.py",
+                executable="spawner",
                 arguments=["joint_state_broadcaster"],
             ),
             Node(
                 name="diff_drive_controller_spawner",
                 package="controller_manager",
-                executable="spawner.py",
+                executable="spawner",
                 arguments=["diff_drive_controller"],
             ),
         ]
