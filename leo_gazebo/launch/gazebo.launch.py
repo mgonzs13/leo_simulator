@@ -32,6 +32,26 @@ def generate_launch_description():
                 default_value="false",
                 description='Set to "true" to increase messages written to terminal.',
             ),
+            DeclareLaunchArgument(
+                name="initial_pose_x",
+                default_value="0.0",
+                description="Initial pose x"
+            ),
+            DeclareLaunchArgument(
+                name="initial_pose_y",
+                default_value="0.0",
+                description="Initial pose y"
+            ),
+            DeclareLaunchArgument(
+                name="initial_pose_z",
+                default_value="0.0",
+                description="Initial pose z"
+            ),
+            DeclareLaunchArgument(
+                name="initial_pose_yaw",
+                default_value="0.0",
+                description="Initial pose yaw"
+            ),
             IncludeLaunchDescription(
                 PythonLaunchDescriptionSource(
                     [
@@ -50,7 +70,13 @@ def generate_launch_description():
             IncludeLaunchDescription(
                 PythonLaunchDescriptionSource(
                     [pkg_share, "/launch/spawn_robot.launch.py"]
-                )
+                ),
+                launch_arguments={
+                    "initial_pose_x": LaunchConfiguration("initial_pose_x"),
+                    "initial_pose_y": LaunchConfiguration("initial_pose_y"),
+                    "initial_pose_z": LaunchConfiguration("initial_pose_z"),
+                    "initial_pose_yaw": LaunchConfiguration("initial_pose_yaw"),
+                }.items()
             ),
         ]
     )

@@ -6,7 +6,6 @@ from launch_ros.actions import Node, PushRosNamespace
 
 
 def generate_launch_description():
-    pkg_share = get_package_share_directory("leo_gazebo")
     leo_description_share = get_package_share_directory("leo_description")
 
     return LaunchDescription(
@@ -29,6 +28,26 @@ def generate_launch_description():
                 name="model_name",
                 default_value="leo",
                 description="The name of the spawned model in Gazebo",
+            ),
+            DeclareLaunchArgument(
+                name="initial_pose_x",
+                default_value="0.0",
+                description="Initial pose x"
+            ),
+            DeclareLaunchArgument(
+                name="initial_pose_y",
+                default_value="0.0",
+                description="Initial pose y"
+            ),
+            DeclareLaunchArgument(
+                name="initial_pose_z",
+                default_value="0.0",
+                description="Initial pose z"
+            ),
+            DeclareLaunchArgument(
+                name="initial_pose_yaw",
+                default_value="0.0",
+                description="Initial pose yaw"
             ),
             PushRosNamespace(LaunchConfiguration("robot_ns")),
             Node(
@@ -57,6 +76,10 @@ def generate_launch_description():
                     "-topic", "robot_description",
                     "-entity", LaunchConfiguration("model_name"),
                     "-timeout", "120",
+                    "-x", LaunchConfiguration("initial_pose_x"),
+                    "-y", LaunchConfiguration("initial_pose_y"),
+                    "-z", LaunchConfiguration("initial_pose_z"),
+                    "-Y", LaunchConfiguration("initial_pose_yaw")
                 ],
                 parameters=[{"use_sim_time": True}]
                 # fmt: on
